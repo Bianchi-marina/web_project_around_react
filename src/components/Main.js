@@ -1,14 +1,7 @@
-function App() {
-  return (
-    <section className="page">
-      <header className="header">
-        <img
-          className="header__logo"
-          src="./images/logo-vector.png"
-          alt="Logo da página Around us"
-        />
-      </header>
-      <section className="profile">
+function Main() {
+    return(
+        <>
+        <section className="profile">
         <div className="profile__view">
           <button type="button" className="profile__edit-avatar">
             <img className="profile__img" src="#" alt="Foto de perfil do usuário" />
@@ -182,11 +175,8 @@ function App() {
           </button>
         </div>
       </section>
-      <footer className="footer">
-        <h2 className="footer__copyright">© 2023 Around The U.S.</h2>
-      </footer>
-    </section>
-  );
+        </>
+    )
 }
 
-export default App;
+export default Main;
