@@ -18,7 +18,7 @@
 }
 .profile__edit-avatar {
     padding: 0;
-    background: url(../images/edit-profile-photo-icon.png) center no-repeat;
+    background: url(/public/images/edit-profile-photo-icon.png) center no-repeat;
     border: none;
     cursor: pointer;
     transition: 0.2s ease-in;

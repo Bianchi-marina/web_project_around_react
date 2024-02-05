@@ -1,13 +1,15 @@
 function PopupWithForm ({
     title,
     name,
-    children
+    children,
+    isOpen,
+    onClose
 }){
     return(
       <>
-        <section className={`popup ${name}`}>
+        <section className={`popup ${name} ${isOpen ? "popup_opened" : ""}`}>
           <div className="popup__container" id="cards-form">
-            <button type="button" className="popup__close-icon">
+            <button type="button" className="popup__close-icon" onClick={onClose}>
               <img
                 className="popup__close-icon-img popup__close"
                 src="./images/close-icon.png"
