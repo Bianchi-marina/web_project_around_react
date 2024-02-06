@@ -1,19 +1,48 @@
+import { useState, useEffect } from "react";
+import { api } from "../utils/api.js";
+import Card from "./Card.js";
+
 function Main( {
   onEditProfileClick,
   onAddPlaceClick,
-  onEditAvatarClick
-  // onCardClick
+  onEditAvatarClick,
+  onCardClick
 }) {
+    const [userName, setUserName] = useState('');
+    const [userDescription, setUserDescription] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
+    const [cards, setCards] = useState([]);
+  
+    useEffect(() => {
+      api.getUserInfo()
+        .then(userInfo => {
+          setUserName(userInfo.name);
+          setUserDescription(userInfo.about);
+          setUserAvatar(userInfo.avatar);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do usuário:', error);
+        });
+
+      api.getInitialCards()
+        .then(initialCards => {
+          setCards(initialCards);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados dos cartões:', error);
+        });
+    }, []);
+
     return(
         <>
         <section className="profile">
             <div className="profile__view">
               <button onClick={onEditAvatarClick} type="button" className="profile__edit-avatar">
-                <img className="profile__img" src="#" alt="Foto de perfil do usuário" />
+                <img className="profile__img" src={userAvatar} alt="Foto de perfil do usuário" />
               </button>
               <div className="profile__description">
-                <h2 className="profile__name" />
-                <h2 className="profile__job" />
+                <h2 className="profile__name">{userName}</h2>
+                <h2 className="profile__job">{userDescription}</h2>
                 <button onClick={onEditProfileClick} type="button" className="profile__edit-button">
                   <img
                     className="profile__edit-button-img"
@@ -32,8 +61,12 @@ function Main( {
             </button>
         </section>
         <section className="elements">
-            <ul className="elements__card elements" />
-            <template id="template-card" />
+          <ul className="elements__card elements">
+          {cards.map((card) => (
+          <Card cardData={card} key={card._id} onCardClick={onCardClick} /> 
+          ))}
+          </ul>
+          <template id="template-card" />
         </section>
         <section className="popup popup_delete">
           <div className="popup__container popup__container_delete">
