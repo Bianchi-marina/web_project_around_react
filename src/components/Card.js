@@ -1,5 +1,5 @@
 function Card ({ cardData, onCardClick}) {
-    const { imageUrl, name } = cardData;
+    const { link, name } = cardData;
 
     const handleClick = () => {
       onCardClick(cardData);
@@ -15,7 +15,7 @@ function Card ({ cardData, onCardClick}) {
                 alt="ícone de lixeira"
               />
             </button>
-            <img  className="elements__card-img" src={imageUrl} alt={name} onClick={handleClick}/>
+            <img  className="elements__card-img" src={link} alt={name} onClick={handleClick}/>
             <div  className="elements__card-text">
               <p  className="elements__card-name">{name}</p>
               <div  className="elements__like">

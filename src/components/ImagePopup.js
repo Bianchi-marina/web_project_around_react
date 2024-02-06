@@ -13,7 +13,7 @@ function ImagePopup({
               alt="ìcone para fechar o pop-up"
             />
           </button>
-          <img className="popup__img-zoom" src={card ? card.imageUrl : ''} alt={card ? card.name : ''} />
+          <img className="popup__img-zoom" src={card ? card.link : ''} alt={card ? card.name : ''} />
           <p className="popup__description">{card ? card.name : ''}</p>/
         </div>
        </section>
