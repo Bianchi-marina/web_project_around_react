@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { api } from "../utils/api.js";
 import Card from "./Card.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main( {
   onEditProfileClick,
@@ -8,21 +9,27 @@ function Main( {
   onEditAvatarClick,
   onCardClick
 }) {
-    const [userName, setUserName] = useState('');
-    const [userDescription, setUserDescription] = useState('');
-    const [userAvatar, setUserAvatar] = useState('');
+    // const [userName, setUserName] = useState('');
+    // const [userDescription, setUserDescription] = useState('');
+    // const [userAvatar, setUserAvatar] = useState('');
     const [cards, setCards] = useState([]);
+    const currentUser = useContext(CurrentUserContext);
+
+    const handleDeleteProduct = (cardId) => {
+      api.deleteCard(cardId)
+      .then(() => setCards(cards.filter((card) => card._id !== cardId)));
+    }
   
     useEffect(() => {
-      api.getUserInfo()
-        .then(userInfo => {
-          setUserName(userInfo.name);
-          setUserDescription(userInfo.about);
-          setUserAvatar(userInfo.avatar);
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados do usuário:', error);
-        });
+      // api.getUserInfo()
+      //   .then(userInfo => {
+      //     setUserName(userInfo.name);
+      //     setUserDescription(userInfo.about);
+      //     setUserAvatar(userInfo.avatar);
+      //   })
+      //   .catch(error => {
+      //     console.error('Erro ao buscar dados do usuário:', error);
+      //   });
 
       api.getInitialCards()
         .then(initialCards => {
@@ -38,11 +45,11 @@ function Main( {
         <section className="profile">
             <div className="profile__view">
               <button onClick={onEditAvatarClick} type="button" className="profile__edit-avatar">
-                <img className="profile__img" src={userAvatar} alt="Foto de perfil do usuário" />
+                <img className="profile__img" src={currentUser.avatar} alt="Foto de perfil do usuário" />
               </button>
               <div className="profile__description">
-                <h2 className="profile__name">{userName}</h2>
-                <h2 className="profile__job">{userDescription}</h2>
+                <h2 className="profile__name">{currentUser.name}</h2>
+                <h2 className="profile__job">{currentUser.about}</h2>
                 <button onClick={onEditProfileClick} type="button" className="profile__edit-button">
                   <img
                     className="profile__edit-button-img"
@@ -63,7 +70,7 @@ function Main( {
         <section className="elements">
           <ul className="elements__card elements">
           {cards.map((card) => (
-          <Card cardData={card} key={card._id} onCardClick={onCardClick} /> 
+          <Card cardData={card} key={card._id} onCardClick={onCardClick} onDelete={handleDeleteProduct}/> 
           ))}
           </ul>
           <template id="template-card" />

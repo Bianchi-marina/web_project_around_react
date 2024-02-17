@@ -1,5 +1,8 @@
-function Card ({ cardData, onCardClick}) {
-    const { link, name } = cardData;
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useContext } from "react";
+
+function Card ({ cardData, onCardClick, onDelete }) {
+    const { link, name, _id } = cardData;
 
     const handleClick = () => {
       onCardClick(cardData);
@@ -8,7 +11,7 @@ function Card ({ cardData, onCardClick}) {
     return(
         <>
         <li className="elements__li">
-            <button type="button"  className="elements__trash">
+            <button type="button"  className="elements__trash" onClick={() => onDelete(_id)}>
               <img
                  className="elements__button-trash"
                 src="./images/trash.png"
