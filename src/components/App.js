@@ -6,6 +6,7 @@ import ImagePopup from "./ImagePopup.js";
 import { useEffect, useState } from "react";
 import { api } from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -16,7 +17,8 @@ function App() {
 
   useEffect(() => {
     api.getUserInfo()
-    .then((userInfo) => setCurrentUser(userInfo));
+    .then((userInfo) => setCurrentUser(userInfo))
+    .catch((error) => console.log(error));
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -35,6 +37,15 @@ function App() {
     setselectedCard(card);
   }
 
+  const handleUpdateUser = (userData) => {
+    api.editProfile(userData)
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+        closeAllPopups();
+      })
+      .catch((error) => console.log(error));
+  };
+
   const closeAllPopups = () => {
     setAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -52,41 +63,12 @@ function App() {
       onAddPlaceClick={handleAddPlaceClick}
       onCardClick={handleCardClick}
       />
-      <PopupWithForm isOpen={isEditProfilePopupOpen} title="Editar Perfil" name="popup" onClose={closeAllPopups}>
-      <>
-          <label>
-            <input
-      id="name-input"
-              className="popup__form-input popup__form-input_name"
-              placeholder="Nome"
-              type="text"
-              name="name"
-              minLength={2}
-              maxLength={40}
-              required=""
-      />
-            <span className="name-input-error" />
-          </label>
-          <label>
-            <input
-      id="about-input"
-              className="popup__form-input popup__form-input_about"
-              placeholder="Sobre"
-              type="text"
-              name="about"
-              minLength={2}
-              maxLength={200}
-              required=""
-      />
-            <span className="about-input-error" />
-          </label>
-      </>
-      </PopupWithForm>
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
       <PopupWithForm isOpen={isAddPlacePopupOpen} title="Novo Local" name="popup-add" onClose={closeAllPopups}>
       <>
           <label>
             <input
-      id="title-input"
+              id="title-input"
               placeholder="Título"
               type="text"
               className="popup__form-input popup__form-input_title"

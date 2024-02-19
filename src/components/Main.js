@@ -7,7 +7,7 @@ function Main( {
   onEditProfileClick,
   onAddPlaceClick,
   onEditAvatarClick,
-  onCardClick
+  onCardClick,
 }) {
     // const [userName, setUserName] = useState('');
     // const [userDescription, setUserDescription] = useState('');
@@ -15,10 +15,10 @@ function Main( {
     const [cards, setCards] = useState([]);
     const currentUser = useContext(CurrentUserContext);
 
-    const handleDeleteProduct = (cardId) => {
-      api.deleteCard(cardId)
-      .then(() => setCards(cards.filter((card) => card._id !== cardId)));
-    }
+    // const handleDeleteProduct = (cardId) => {
+    //   api.deleteCard(cardId)
+    //   .then(() => setCards(cards.filter((card) => card._id !== cardId)));
+    // }
   
     useEffect(() => {
       // api.getUserInfo()
@@ -39,6 +39,26 @@ function Main( {
           console.error('Erro ao buscar dados dos cartões:', error);
         });
     }, []);
+
+    function handleCardLike(card) {
+      // Verifique mais uma vez se esse cartão já foi curtido
+      const isLiked = card.likes.some(i => i._id === currentUser._id);
+      
+      // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+      api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      });
+    }
+
+    function handleCardDelete(cardId) {
+      api.deleteCard(cardId)
+        .then(() => {
+          setCards((state) => state.filter((card) => card._id !== cardId));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } 
 
     return(
         <>
@@ -70,7 +90,7 @@ function Main( {
         <section className="elements">
           <ul className="elements__card elements">
           {cards.map((card) => (
-          <Card cardData={card} key={card._id} onCardClick={onCardClick} onDelete={handleDeleteProduct}/> 
+          <Card cardData={card} key={card._id} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete}/> 
           ))}
           </ul>
           <template id="template-card" />
