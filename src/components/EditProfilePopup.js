@@ -1,32 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     const currentUser = useContext(CurrentUserContext);
-    const [name, setName] = useState('');
-    const [about, setAbout] = useState('');
+    const [name, setName] = useState("");
+    const [about, setAbout] = useState("");
 
     useEffect(() => {
-        setName(currentUser.name || '');
-        setAbout(currentUser.about || '');
-      }, [currentUser]);
+      setName(currentUser.name );
+      setAbout(currentUser.about);
+  }, [currentUser]);
 
-    const handleChangeName = (event) => {
-        setName(event.target.value);
-      };
-    
-      const handleChangeAbout = (event) => {
-        setAbout(event.target.value);
-      };
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        onUpdateUser({
-          name,
-          about: about
-        });
-      };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      onUpdateUser({
+        name,
+        about
+      });
+    };
 
     return (
         <PopupWithForm isOpen={isOpen} title="Editar Perfil" name="popup" onClose={onClose} onSubmit={handleSubmit}>
@@ -35,7 +27,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
               <input
                 id="name-input"
                 value={name}
-                onChange={handleChangeName}
+                onChange={(event) => {
+                  setName(event.target.value)}}
                 className="popup__form-input popup__form-input_name"
                 placeholder="Nome"
                 type="text"
@@ -50,7 +43,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
               <input
                 id="about-input"
                 value={about}
-                onChange={handleChangeAbout}
+                onChange={(event) => {
+                  setAbout(event.target.value)}}
                 className="popup__form-input popup__form-input_about"
                 placeholder="Sobre"
                 type="text"

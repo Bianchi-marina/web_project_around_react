@@ -3,7 +3,8 @@ function PopupWithForm ({
     name,
     children,
     isOpen,
-    onClose
+    onClose,
+    onSubmit
 }){
     return(
       <>
@@ -16,7 +17,7 @@ function PopupWithForm ({
                 alt="ìcone para fechar o pop-up"
               />
             </button>
-            <form className="popup__form popup__form_add" noValidate="">
+            <form className="popup__form popup__form_add" noValidate="" onSubmit={onSubmit}>
               <fieldset className="popup__set">
                 <h2 className="popup__title">{title}</h2>
                 {children}

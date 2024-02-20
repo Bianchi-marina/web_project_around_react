@@ -110,6 +110,13 @@ class Api {
         return Promise.reject(`Error: ${res.status}`);
       });
     }
+
+    changeLikeCardStatus (cardId, isLiked) {
+      if(!isLiked) {
+        return this.addLikes(cardId)
+      }
+      return this.removeLikes(cardId);
+    }
 }
 
 export const api = new Api({
