@@ -26,14 +26,13 @@ class Api {
           return Promise.reject(`Error: ${res.status}`);
       });
     }
-    editProfile(name, about) {
+    editProfile(userData) {
       return fetch(`${this._baseUrl}/users/me`, {
           method: "PATCH",
           headers: this._headers,
-          body: JSON.stringify({
-            name: name,
-            about: about,
-          }),
+          body: JSON.stringify(
+           userData
+          ),
       })
       .then(res => {
           if (res.ok) {

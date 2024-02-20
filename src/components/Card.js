@@ -7,8 +7,9 @@ function Card({ cardData, onCardClick, onCardDelete, onCardLike }) {
 
   const isOwn = owner._id === currentUser._id;
 
+
   const cardDeleteButtonClassName = `elements__trash ${
-    isOwn ? "elements__trash" : "elements__trash_hidden"
+    !isOwn ? "" : "elements__trash_hidden"
   }`;
 
   const isLiked = likes.some((like) => like._id === currentUser._id);
@@ -49,7 +50,7 @@ function Card({ cardData, onCardClick, onCardDelete, onCardLike }) {
               className={cardLikeButtonClassName}
               onClick={() => onCardLike(cardData)}
             ></button>
-            <span className="elements__like-count"></span>
+            <span className="elements__like-count">{likes.length}</span>
           </div>
         </div>
       </li>
